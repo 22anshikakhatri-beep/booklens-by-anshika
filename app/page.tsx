@@ -10,7 +10,7 @@ type Book = {
   year?: number;
   pages?: number;
   rating?: number;
-  reason?: string; // description/why-this
+  reason?: string;
 };
 
 const GENRE_TAGS = [
@@ -51,9 +51,9 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: qmode === "similar" ? `Books similar to ${qtext}` : qtext,
-          mode: qmode === "similar" ? "topic" : qmode, // backend modes: topic | genre | description
-          preferences
-        })
+          mode: qmode === "similar" ? "topic" : qmode, // backend expects: topic | genre | description
+          preferences,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || res.statusText);
@@ -67,76 +67,84 @@ export default function Home() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-screen">
       {/* Background image */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/backrground.png"
+        src="/background.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
       {/* Soft vignette overlay */}
-      <div className="vignette" />
+      <div className="absolute inset-0 vignette" />
 
-      {/* Content wrapper */}
-      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
-        {/* Title */}
-        <header className="text-center mb-8">
-          <h1 className="heading-serif text-[46px] md:text-[64px] font-bold">Book Burrow</h1>
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-12">
+        {/* Hero title */}
+        <header className="text-center mb-6 md:mb-8">
+          <h1 className="heading-serif text-5xl md:text-6xl font-[900] drop-shadow-[0_3px_2px_rgba(0,0,0,0.55)]">
+            Book Burrow
+          </h1>
         </header>
 
         {/* Search zone */}
         <section className="relative mx-auto max-w-3xl">
-          {/* Mascot (left of the search) */}
+          {/* Mascot (left of search) */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/Gemini_Generated_Image_c1mttwc1mttwc1mt-removebg-preview.png"
+            src="/mascot.png"
             alt="Bookish cat"
-            className="hidden md:block absolute -left-24 -top-8 w-28 h-auto"
+            className="hidden md:block absolute -left-24 -top-2 w-28 h-auto drop-shadow-[0_8px_18px_rgba(0,0,0,0.55)]"
           />
 
-          {/* Mode tabs */}
+          {/* Tabs */}
           <div className="mb-3 flex justify-center gap-2">
             {([
               { key: "genre", label: "By Genre" },
               { key: "similar", label: "Similar To" },
               { key: "description", label: "Describe It" },
-              { key: "topic", label: "Topic" }
-            ] as { key: Mode; label: string }[]).map(t => (
+              { key: "topic", label: "Topic" },
+            ] as { key: Mode; label: string }[]).map((t) => (
               <button
                 key={t.key}
                 onClick={() => setMode(t.key)}
-                className={`chip ${mode === t.key ? "outline outline-1 outline-white/40" : ""}`}
-                style={{ borderRadius: "9999px" }}
+                className={
+                  "text-sm rounded-full px-3 py-1 transition " +
+                  (mode === t.key
+                    ? "bg-white/20 text-[color:var(--parchment)] border border-white/30"
+                    : "bg-white/10 text-white/80 hover:bg-white/15 border border-white/10")
+                }
               >
                 {t.label}
               </button>
             ))}
           </div>
 
-          {/* Search bar (glassy pill) */}
-          <div className="bg-coffee-glass flex items-center gap-2 p-2 pl-4">
+          {/* Pill search bar */}
+          <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2">
             <input
               value={text}
-              onChange={e => setText(e.target.value)}
+              onChange={(e) => setText(e.target.value)}
               placeholder={placeholder}
-              className="glass-input placeholder:opacity-70"
+              className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
+              style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "17px" }}
             />
             <button
               onClick={() => runSearch()}
               disabled={loading}
-              className="glass-button"
-              aria-label="Search"
+              className="rounded-full h-9 px-4 grid place-items-center border border-white/30 hover:bg-white/20 disabled:opacity-60 text-sm"
             >
               {loading ? "Searching…" : "Search"}
             </button>
           </div>
 
-          {/* Quick genre chips */}
+          {/* Quick chips */}
           <div className="mt-3 flex flex-wrap gap-2 justify-center">
-            {GENRE_TAGS.map(g => (
+            {GENRE_TAGS.map((g) => (
               <button
                 key={g}
                 onClick={() => { setMode("genre"); setText(g); runSearch(g, "genre"); }}
                 className="chip"
+                style={{ fontFamily: "Cormorant Garamond, serif" }}
               >
                 {g}
               </button>
@@ -146,16 +154,17 @@ export default function Home() {
           {/* Optional preferences */}
           <input
             value={preferences}
-            onChange={e => setPreferences(e.target.value)}
+            onChange={(e) => setPreferences(e.target.value)}
             placeholder="Optional preferences (audience, sub-themes, page count …)"
-            className="mt-4 w-full glass-input bg-coffee-glass rounded-[18px]"
+            className="mt-4 w-full rounded-xl bg-coffee-glass px-4 py-3 outline-none text-[color:var(--parchment)] placeholder:text-[rgba(242,233,220,.75)]"
+            style={{ fontFamily: "Cormorant Garamond, serif" }}
           />
         </section>
 
         {/* Results */}
         <section className="mt-10">
           {!loading && items.length === 0 && (
-            <p className="text-center opacity-90">
+            <p className="text-center text-[rgba(242,233,220,.85)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
               Try a genre, “similar to …”, or a description.
             </p>
           )}
@@ -163,7 +172,7 @@ export default function Home() {
           {loading && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="card h-40 animate-pulse" />
+                <div key={i} className="rounded-3xl" style={{ backgroundColor:"rgba(58,39,33,.78)", height:"160px" }} />
               ))}
             </div>
           )}
@@ -171,22 +180,23 @@ export default function Home() {
           {!loading && items.length > 0 && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {items.map((b, i) => (
-                <article key={`${b.title}-${i}`} className="card p-5">
-                  {/* Title & byline */}
-                  <h3 className="text-xl font-semibold">{b.title}</h3>
-                  {b.author && <p className="mt-0.5 opacity-90 italic">by {b.author}</p>}
-
-                  {/* Tag row */}
+                <article key={`${b.title}-${i}`} className="card p-5 text-[color:var(--parchment)]">
+                  <h3 className="text-[22px] font-semibold" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                    {b.title}
+                  </h3>
+                  {b.author && (
+                    <p className="mt-1 italic text-[rgba(242,233,220,.85)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                      by {b.author}
+                    </p>
+                  )}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {b.genre && <span className="chip">{b.genre}</span>}
                     {typeof b.year === "number" && <span className="chip">{b.year}</span>}
                     {typeof b.pages === "number" && <span className="chip">{b.pages}p</span>}
                     {typeof b.rating === "number" && <span className="chip">★ {b.rating.toFixed(1)}</span>}
                   </div>
-
-                  {/* Why this book */}
                   {b.reason && (
-                    <p className="mt-4 text-[15px] leading-relaxed">
+                    <p className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.92)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
                       {b.reason}
                     </p>
                   )}
@@ -198,7 +208,11 @@ export default function Home() {
       </div>
 
       {/* Toast */}
-      {toast && <div className="toast">{toast}</div>}
+      {toast && (
+        <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-[color:var(--parchment)] bg-[rgba(58,39,33,.78)] border border-[rgba(255,255,255,.08)]">
+          {toast}
+        </div>
+      )}
     </main>
   );
 }
