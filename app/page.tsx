@@ -110,29 +110,35 @@ export default function Home() {
           </div>
 
           {/* Mascot + Bubble row */}
-          <div className="relative mt-4 flex items-start gap-4 md:gap-5">
+        <div className="relative mt-4 flex items-start gap-4 md:gap-5">
+          {/* Mascot in fixed-width container */}
+          <div className="flex-shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/mascot.png"
               alt="Bookish cat"
-              className="w-48 md:w-56 h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)] -ml-4 md:ml-0"
+              className="h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)]"
+              style={{ width: "260px" }} // adjust 240px–280px until perfect
             />
-            <div
-              className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border"
-              style={{
-                background: "rgba(58,39,33,.78)",
-                borderColor: "rgba(255,255,255,.10)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                maxWidth: "380px",
-                fontFamily: "Cormorant Garamond, serif",
-                fontSize: "17px",
-                lineHeight: 1.35,
-              }}
-            >
-              {bubble}
-            </div>
           </div>
+        
+          {/* Speech bubble stays aligned to right of mascot */}
+          <div
+            className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border flex-shrink"
+            style={{
+              background: "rgba(58,39,33,.78)",
+              borderColor: "rgba(255,255,255,.10)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              maxWidth: "380px",
+              fontFamily: "Cormorant Garamond, serif",
+              fontSize: "17px",
+              lineHeight: 1.35,
+            }}
+          >
+            {bubble}
+          </div>
+        </div>
         </section>
 
         {/* Results */}
