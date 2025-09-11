@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Uncial_Antiqua, Lora } from "next/font/google";
+
+const display = Uncial_Antiqua({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+const body = Lora({
+  subsets: ["latin"],
+  variable: "--font-body",
+});
 
 export const metadata: Metadata = {
   title: "Book Burrow",
-  description: "Book recommendations",
+  description: "Cozy, vibe-first book recommendations.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <head>
-        {/* Storybook display + elegant body serif */}
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
-      </head>
-      {/* deep brown canvas, parchment text */}
-      <body className="antialiased bg-[color:var(--coffee-950)] text-[color:var(--parchment)]">
+      <body className={`${display.variable} ${body.variable}`}>
         {children}
       </body>
     </html>
