@@ -1,8 +1,9 @@
+// app/page.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
 
-/** API result shape */
+type Mode = "genre" | "similar" | "description" | "topic";
 type Book = {
   title: string;
   author: string;
@@ -14,32 +15,41 @@ type Book = {
 };
 
 export default function Home() {
+  const [mode, setMode] = useState<Mode>("topic");
   const [text, setText] = useState("");
   const [items, setItems] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [lastQuery, setLastQuery] = useState<string>("");
+
+  // Your single, precise placeholder (as in your reference image)
+  const placeholder = useMemo(
+    () => "Search a topic, genre, or similar to books you have read",
+    []
+  );
 
   useEffect(() => {
     if (!toast) return;
-    const id = setTimeout(() => setToast(null), 2800);
+    const id = setTimeout(() => setToast(null), 3000);
     return () => clearTimeout(id);
   }, [toast]);
 
   async function runSearch() {
-    const q = text.trim();
-    if (!q) {
+    const qtext = text.trim();
+    if (!qtext) {
       setToast("Please type something first.");
       return;
     }
     setLoading(true);
     setItems([]);
-    setLastQuery(q);
     try {
       const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: q, mode: "topic", preferences: "" }),
+        body: JSON.stringify({
+          text: mode === "similar" ? `Books similar to ${qtext}` : qtext,
+          mode: mode === "similar" ? "topic" : mode, // backend expects: topic | genre | description
+          preferences: "", // we removed extra inputs
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || res.statusText);
@@ -52,28 +62,28 @@ export default function Home() {
     }
   }
 
-  // Pressing Enter triggers search
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") runSearch();
-  };
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault(); // ENTER submits
+    runSearch();
+  }
 
-  // Speech bubble content
-  const bubble = useMemo(() => {
-    if (loading) return "Ok, go be busy for 15 sec while I find you books ..";
-    if (!loading && items.length > 0) return "There you go!";
-    return "What do you want to read today?";
-  }, [loading, items.length]);
+  // Bubble copy per state
+  const bubble =
+    loading && text
+      ? "Ok, go be busy for 15 sec while I find you books…"
+      : items.length > 0
+      ? "There you go!"
+      : "What do you want to read today?";
 
   return (
     <main className="relative min-h-screen">
-      {/* Background image */}
+      {/* Background */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/background.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
-      {/* Soft vignette overlay */}
       <div className="absolute inset-0 vignette" />
 
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
@@ -84,59 +94,44 @@ export default function Home() {
           </h1>
         </header>
 
-        {/* Search section */}
+        {/* Search */}
         <section className="relative mx-auto max-w-3xl">
-          {/* Search pill */}
-          <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2">
-            <input
-              aria-label="Search books"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={onKeyDown}
-              placeholder="Search a topic, genre, or similar to books you have read"
-              className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
-              style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "17px" }}
-            />
-            <button
-              onClick={runSearch}
-              disabled={loading}
-              className="rounded-full h-10 w-10 grid place-items-center border border-white/30 hover:bg-white/20 disabled:opacity-60"
-              aria-label="Search"
-              title="Search"
-            >
-              {/* Magnifying glass icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="text-[color:var(--parchment)]"
+          <form onSubmit={onSubmit} className="w-full">
+            <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/20">
+              <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={placeholder}
+                aria-label="Search"
+                className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
+                style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "18px" }}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="rounded-full h-10 w-10 grid place-items-center border border-white/30 hover:bg-white/20 disabled:opacity-60"
+                aria-label="Search"
+                title="Search"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-          </div>
+                {/* simple magnifier glyph */}
+                <span className="text-[color:var(--parchment)] text-lg">🔍</span>
+              </button>
+            </div>
+          </form>
 
-          {/* Mascot + Bubble row */}
+          {/* Mascot + Bubble row (anchored to search, NOT centered) */}
           <div className="relative mt-4 flex items-start gap-5">
             {/* Fixed-width mascot container so bubble stays beside it */}
-            <div className="flex-shrink-0 w-[260px] md:w-[300px]">
+            <div className="flex-shrink-0 w-[260px] md:w-[300px] lg:w-[320px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto w-full drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)]"
+                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
               />
             </div>
-          
-            {/* Speech bubble fills space to the right */}
+
+            {/* Speech bubble grows to the right */}
             <div
               className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border flex-grow"
               style={{
@@ -144,7 +139,7 @@ export default function Home() {
                 borderColor: "rgba(255,255,255,.10)",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
-                maxWidth: "420px",
+                maxWidth: "520px",
                 fontFamily: "Cormorant Garamond, serif",
                 fontSize: "17px",
                 lineHeight: 1.35,
@@ -157,22 +152,13 @@ export default function Home() {
 
         {/* Results */}
         <section className="mt-10">
-          {(lastQuery || text) && (
-            <p
-              className="mb-4 text-center text-[rgba(242,233,220,.92)]"
-              style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "18px" }}
-            >
-              {loading ? text : lastQuery || text}
-            </p>
-          )}
-
           {loading && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
                 <div
                   key={i}
-                  className="rounded-[22px]"
-                  style={{ backgroundColor: "rgba(58,39,33,.78)", height: 160 }}
+                  className="rounded-3xl"
+                  style={{ backgroundColor: "rgba(58,39,33,.78)", height: "160px" }}
                 />
               ))}
             </div>
@@ -183,7 +169,14 @@ export default function Home() {
               {items.map((b, i) => (
                 <article
                   key={`${b.title}-${i}`}
-                  className="card p-5 text-[color:var(--parchment)]"
+                  className="rounded-3xl border border-white/10"
+                  style={{
+                    background: "rgba(58,39,33,.78)",
+                    padding: "20px",
+                    color: "var(--parchment)",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
+                  }}
                 >
                   <h3
                     className="text-[22px] font-semibold"
@@ -193,25 +186,37 @@ export default function Home() {
                   </h3>
                   {b.author && (
                     <p
-                      className="mt-1 italic text-[rgba(242,233,220,.88)]"
+                      className="mt-1 italic text-[rgba(242,233,220,.85)]"
                       style={{ fontFamily: "Cormorant Garamond, serif" }}
                     >
                       by {b.author}
                     </p>
                   )}
-
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {b.genre && <span className="chip">{b.genre}</span>}
-                    {typeof b.year === "number" && <span className="chip">{b.year}</span>}
-                    {typeof b.pages === "number" && <span className="chip">{b.pages}p</span>}
+                    {b.genre && (
+                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                        {b.genre}
+                      </span>
+                    )}
+                    {typeof b.year === "number" && (
+                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                        {b.year}
+                      </span>
+                    )}
+                    {typeof b.pages === "number" && (
+                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                        {b.pages}p
+                      </span>
+                    )}
                     {typeof b.rating === "number" && (
-                      <span className="chip">★ {b.rating.toFixed(1)}</span>
+                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                        ★ {b.rating.toFixed(1)}
+                      </span>
                     )}
                   </div>
-
                   {b.reason && (
                     <p
-                      className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.95)]"
+                      className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.92)]"
                       style={{ fontFamily: "Cormorant Garamond, serif" }}
                     >
                       {b.reason}
@@ -220,6 +225,15 @@ export default function Home() {
                 </article>
               ))}
             </div>
+          )}
+
+          {!loading && items.length === 0 && (
+            <p
+              className="text-center text-[rgba(242,233,220,.85)]"
+              style={{ fontFamily: "Cormorant Garamond, serif" }}
+            >
+              {/* intentionally blank to match your design (no extra helper text) */}
+            </p>
           )}
         </section>
       </div>
