@@ -10,13 +10,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Serif display for the hero title */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap"
-          rel="stylesheet"
-        />
+        {/* Storybook display + elegant body serif */}
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased text-neutral-50 bg-neutral-950">
+      {/* deep brown canvas, parchment text */}
+      <body className="antialiased bg-[color:var(--coffee-950)] text-[color:var(--parchment)]">
         {children}
       </body>
     </html>
