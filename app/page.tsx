@@ -124,21 +124,21 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Mascot + Bubble row (mascot bigger, bubble stays aligned) */}
-          <div className="relative mt-4 flex items-start gap-4 md:gap-5">
-            {/* Fixed-width container prevents bubble from shifting when mascot size changes */}
-            <div className="flex-shrink-0">
+          {/* Mascot + Bubble row */}
+          <div className="relative mt-4 flex items-start gap-5">
+            {/* Fixed-width mascot container so bubble stays beside it */}
+            <div className="flex-shrink-0 w-[260px] md:w-[300px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)]"
-                style={{ width: "260px" }} // adjust 240–300px to taste
+                className="h-auto w-full drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)]"
               />
             </div>
-
+          
+            {/* Speech bubble fills space to the right */}
             <div
-              className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border"
+              className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border flex-grow"
               style={{
                 background: "rgba(58,39,33,.78)",
                 borderColor: "rgba(255,255,255,.10)",
