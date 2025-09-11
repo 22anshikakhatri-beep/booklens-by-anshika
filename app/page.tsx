@@ -52,12 +52,12 @@ export default function Home() {
     }
   }
 
-  // Enter triggers search
+  // Pressing Enter triggers search
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") runSearch();
   };
 
-  // Speech bubble text
+  // Speech bubble content
   const bubble = useMemo(() => {
     if (loading) return "Ok, go be busy for 15 sec while I find you books ..";
     if (!loading && items.length > 0) return "There you go!";
@@ -66,13 +66,14 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen">
-      {/* Background */}
+      {/* Background image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/backrground.png"
+        src="/background.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
+      {/* Soft vignette overlay */}
       <div className="absolute inset-0 vignette" />
 
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
@@ -103,42 +104,55 @@ export default function Home() {
               aria-label="Search"
               title="Search"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-[color:var(--parchment)]">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+              {/* Magnifying glass icon */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="text-[color:var(--parchment)]"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
             </button>
           </div>
 
-          {/* Mascot + Bubble row */}
-        <div className="relative mt-4 flex items-start gap-4 md:gap-5">
-          {/* Mascot in fixed-width container */}
-          <div className="flex-shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/mascot.png"
-              alt="Bookish cat"
-              className="h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)]"
-              style={{ width: "260px" }} // adjust 240px–280px until perfect
-            />
+          {/* Mascot + Bubble row (mascot bigger, bubble stays aligned) */}
+          <div className="relative mt-4 flex items-start gap-4 md:gap-5">
+            {/* Fixed-width container prevents bubble from shifting when mascot size changes */}
+            <div className="flex-shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/mascot.png"
+                alt="Bookish cat"
+                className="h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)]"
+                style={{ width: "260px" }} // adjust 240–300px to taste
+              />
+            </div>
+
+            <div
+              className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border"
+              style={{
+                background: "rgba(58,39,33,.78)",
+                borderColor: "rgba(255,255,255,.10)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                maxWidth: "420px",
+                fontFamily: "Cormorant Garamond, serif",
+                fontSize: "17px",
+                lineHeight: 1.35,
+              }}
+            >
+              {bubble}
+            </div>
           </div>
-        
-          {/* Speech bubble stays aligned to right of mascot */}
-          <div
-            className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border flex-shrink"
-            style={{
-              background: "rgba(58,39,33,.78)",
-              borderColor: "rgba(255,255,255,.10)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              maxWidth: "380px",
-              fontFamily: "Cormorant Garamond, serif",
-              fontSize: "17px",
-              lineHeight: 1.35,
-            }}
-          >
-            {bubble}
-          </div>
-        </div>
         </section>
 
         {/* Results */}
@@ -155,7 +169,11 @@ export default function Home() {
           {loading && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="rounded-[22px]" style={{ backgroundColor: "rgba(58,39,33,.78)", height: 160 }} />
+                <div
+                  key={i}
+                  className="rounded-[22px]"
+                  style={{ backgroundColor: "rgba(58,39,33,.78)", height: 160 }}
+                />
               ))}
             </div>
           )}
@@ -163,23 +181,39 @@ export default function Home() {
           {!loading && items.length > 0 && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {items.map((b, i) => (
-                <article key={`${b.title}-${i}`} className="card p-5 text-[color:var(--parchment)]">
-                  <h3 className="text-[22px] font-semibold" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                <article
+                  key={`${b.title}-${i}`}
+                  className="card p-5 text-[color:var(--parchment)]"
+                >
+                  <h3
+                    className="text-[22px] font-semibold"
+                    style={{ fontFamily: "Cormorant Garamond, serif" }}
+                  >
                     {b.title}
                   </h3>
                   {b.author && (
-                    <p className="mt-1 italic text-[rgba(242,233,220,.88)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                    <p
+                      className="mt-1 italic text-[rgba(242,233,220,.88)]"
+                      style={{ fontFamily: "Cormorant Garamond, serif" }}
+                    >
                       by {b.author}
                     </p>
                   )}
+
                   <div className="mt-3 flex flex-wrap gap-2">
                     {b.genre && <span className="chip">{b.genre}</span>}
                     {typeof b.year === "number" && <span className="chip">{b.year}</span>}
                     {typeof b.pages === "number" && <span className="chip">{b.pages}p</span>}
-                    {typeof b.rating === "number" && <span className="chip">★ {b.rating.toFixed(1)}</span>}
+                    {typeof b.rating === "number" && (
+                      <span className="chip">★ {b.rating.toFixed(1)}</span>
+                    )}
                   </div>
+
                   {b.reason && (
-                    <p className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.95)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                    <p
+                      className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.95)]"
+                      style={{ fontFamily: "Cormorant Garamond, serif" }}
+                    >
                       {b.reason}
                     </p>
                   )}
@@ -190,6 +224,7 @@ export default function Home() {
         </section>
       </div>
 
+      {/* Toast */}
       {toast && (
         <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-[color:var(--parchment)] bg-[rgba(58,39,33,.78)] border border-[rgba(255,255,255,.08)]">
           {toast}
