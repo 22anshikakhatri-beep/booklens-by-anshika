@@ -28,25 +28,22 @@ export default function Home() {
   const [toast, setToast] = useState<string | null>(null);
 
   const placeholder = useMemo(() => {
-    if (mode === 'genre') return 'Enter a genre, e.g., Biography, Literary fiction…';
-    if (mode === 'similar') return '“Similar to Sally Rooney” or “like Dune”…';
-    if (mode === 'description') return 'Describe the vibe: fast-paced, witty, cozy, etc.';
-    return 'Topic or theme, e.g., tragicomedy about millennial relationships';
+    if (mode === 'genre') return 'Enter a genre, e.g., Romantic Comedy, Biography…';
+    if (mode === 'similar') return '“Similar to The Hating Game” or “like Dune”…';
+    if (mode === 'description') return 'Describe the vibe: cozy, rivals-to-lovers, fast-paced…';
+    return 'Topic or theme, e.g., strategy & gaming, tragicomedy about millennial life';
   }, [mode]);
 
   useEffect(() => {
     if (!toast) return;
-    const id = setTimeout(() => setToast(null), 3500);
+    const id = setTimeout(() => setToast(null), 3000);
     return () => clearTimeout(id);
   }, [toast]);
 
   async function runSearch(q?: string, m?: Mode) {
     const qtext = (q ?? text).trim();
     const qmode = m ?? mode;
-    if (!qtext) {
-      setToast('Please type something first.');
-      return;
-    }
+    if (!qtext) { setToast('Please type something first.'); return; }
     setLoading(true);
     setItems([]);
     try {
@@ -54,12 +51,7 @@ export default function Home() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          text:
-            qmode === 'similar'
-              ? `Books similar to ${qtext}`
-              : qmode === 'genre'
-              ? qtext
-              : qtext,
+          text: qmode === 'similar' ? `Books similar to ${qtext}` : qtext,
           mode: qmode === 'similar' ? 'topic' : qmode, // backend modes: topic | genre | description
           preferences
         })
@@ -76,33 +68,51 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        {/* Header */}
+    <main className="relative min-h-screen">
+      {/* Background image */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/background.png"
+        alt=""
+        className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
+      />
+      {/* Soft vignette overlay */}
+      <div className="absolute inset-0 vignette" />
+
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-12">
+        {/* Hero title */}
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold">BookLens</h1>
-          <p className="opacity-80 mt-2">
-            A book-only LLM wrapper. It never answers general questions—only curated book
-            recommendations.
-          </p>
+          <h1 className="heading-serif text-5xl md:text-6xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+            Book Burrow
+          </h1>
         </header>
 
-        {/* Search Card */}
-        <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+        {/* Search zone */}
+        <section className="relative mx-auto max-w-3xl">
+          {/* Mascot (left of search) */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/mascot.png"
+            alt="Bookish cat"
+            className="hidden md:block absolute -left-24 -top-10 w-28 h-auto drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]"
+          />
+
           {/* Tabs */}
-          <div className="flex gap-2 mb-5">
+          <div className="mb-3 flex justify-center gap-2">
             {([
               { key: 'genre', label: 'By Genre' },
-              { key: 'similar', label: 'Similar Books' },
-              { key: 'description', label: 'Description' },
+              { key: 'similar', label: 'Similar To' },
+              { key: 'description', label: 'Describe It' },
               { key: 'topic', label: 'Topic' }
             ] as { key: Mode; label: string }[]).map(t => (
               <button
                 key={t.key}
                 onClick={() => setMode(t.key)}
                 className={
-                  'px-3 py-2 rounded-lg text-sm ' +
-                  (mode === t.key ? 'bg-white/20 border border-white/20' : 'hover:bg-white/10')
+                  'text-sm rounded-full px-3 py-1 transition ' +
+                  (mode === t.key
+                    ? 'bg-white/20 text-white border border-white/30'
+                    : 'bg-white/10 text-white/80 hover:bg-white/15 border border-white/10')
                 }
               >
                 {t.label}
@@ -110,34 +120,30 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Input */}
-          <div className="flex gap-3">
+          {/* Pill search bar */}
+          <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2">
             <input
               value={text}
               onChange={e => setText(e.target.value)}
               placeholder={placeholder}
-              className="flex-1 rounded-lg bg-black/30 border border-white/10 px-4 py-3 outline-none"
+              className="flex-1 bg-transparent outline-none placeholder:text-neutral-200/70 text-neutral-50 py-2"
             />
             <button
               onClick={() => runSearch()}
               disabled={loading}
-              className="px-4 py-3 rounded-lg bg-white/20 border border-white/20 hover:bg-white/30 disabled:opacity-50"
+              className="rounded-full bg-white/20 hover:bg-white/30 border border-white/30 px-4 py-2 text-sm disabled:opacity-60"
             >
-              {loading ? 'Thinking…' : 'Search'}
+              {loading ? 'Searching…' : 'Search'}
             </button>
           </div>
 
-          {/* Popular genres chips (help fill text quickly) */}
-          <div className="mt-4 flex flex-wrap gap-2">
+          {/* Quick chips */}
+          <div className="mt-3 flex flex-wrap gap-2 justify-center">
             {GENRE_TAGS.map(g => (
               <button
                 key={g}
-                onClick={() => {
-                  setMode('genre');
-                  setText(g);
-                  runSearch(g, 'genre');
-                }}
-                className="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/10"
+                onClick={() => { setMode('genre'); setText(g); runSearch(g, 'genre'); }}
+                className="chip"
               >
                 {g}
               </button>
@@ -148,63 +154,59 @@ export default function Home() {
           <input
             value={preferences}
             onChange={e => setPreferences(e.target.value)}
-            placeholder="Optional preferences (audience, sub-themes, page count…)"
-            className="mt-4 w-full rounded-lg bg-black/30 border border-white/10 px-4 py-3 outline-none"
+            placeholder="Optional preferences (audience, sub-themes, page count …)"
+            className="mt-4 w-full rounded-xl bg-coffee-glass px-4 py-3 outline-none text-neutral-50 placeholder:text-neutral-200/70"
           />
         </section>
 
         {/* Results */}
-        {items.length > 0 && (
-          <>
-            <h2 className="text-2xl font-semibold mt-10 mb-4 text-center">Recommended Books</h2>
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <section className="mt-10">
+          {!loading && items.length === 0 && (
+            <p className="text-center text-neutral-200/80">
+              Try a genre, “similar to …”, or a description.
+            </p>
+          )}
+
+          {loading && (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 9 }).map((_, i) => (
+                <div key={i} className="rounded-2xl bg-coffee-glass h-40 animate-pulse" />
+              ))}
+            </div>
+          )}
+
+          {!loading && items.length > 0 && (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {items.map((b, i) => (
-                <article
-                  key={`${b.title}-${i}`}
-                  className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-semibold leading-snug">{b.title}</h3>
-                    {b.rating ? (
-                      <span className="text-xs bg-white/10 border border-white/10 rounded px-2 py-0.5">
-                        ★ {b.rating.toFixed(1)}
-                      </span>
-                    ) : null}
+                <article key={`${b.title}-${i}`} className="card p-5 text-neutral-100">
+                  {/* Title + byline */}
+                  <h3 className="text-xl font-semibold">{b.title}</h3>
+                  {b.author && <p className="mt-0.5 text-neutral-300 italic">by {b.author}</p>}
+
+                  {/* Chips */}
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {b.genre && <span className="chip">{b.genre}</span>}
+                    {typeof b.year === 'number' && <span className="chip">{b.year}</span>}
+                    {typeof b.pages === 'number' && <span className="chip">{b.pages}p</span>}
+                    {typeof b.rating === 'number' && <span className="chip">★ {b.rating.toFixed(1)}</span>}
                   </div>
-                  <p className="text-sm opacity-80 mt-1">{b.author}</p>
-                  <div className="flex flex-wrap gap-2 text-xs mt-3">
-                    {b.genre && (
-                      <span className="px-2 py-0.5 rounded-full bg-white/10 border border-white/10">
-                        {b.genre}
-                      </span>
-                    )}
-                    {b.year && (
-                      <span className="px-2 py-0.5 rounded-full bg-white/10 border border-white/10">
-                        {b.year}
-                      </span>
-                    )}
-                    {b.pages && (
-                      <span className="px-2 py-0.5 rounded-full bg-white/10 border border-white/10">
-                        {b.pages}p
-                      </span>
-                    )}
-                  </div>
-                  {b.reason && <p className="text-sm opacity-90 mt-3">{b.reason}</p>}
+
+                  {/* Description */}
+                  {b.reason && (
+                    <p className="mt-4 text-[15px] leading-relaxed text-neutral-100/90">
+                      {b.reason}
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
-          </>
-        )}
-
-        {/* Empty state */}
-        {!items.length && !loading && (
-          <p className="opacity-60 text-center mt-10">Try a genre, “similar to …”, or a description.</p>
-        )}
+          )}
+        </section>
       </div>
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-5 right-5 rounded-lg bg-white/15 border border-white/20 px-4 py-3 backdrop-blur-sm">
+        <div className="fixed bottom-5 right-5 rounded-lg bg-coffee-glass px-4 py-3 text-neutral-50">
           {toast}
         </div>
       )}
