@@ -69,11 +69,10 @@ export default function Home() {
       {/* Background */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/backrground.png"
+        src="/background.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
-      {/* Vignette */}
       <div className="absolute inset-0 vignette" />
 
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
@@ -84,16 +83,16 @@ export default function Home() {
           </h1>
         </header>
 
-        {/* Search only */}
+        {/* Search section */}
         <section className="relative mx-auto max-w-3xl">
-          {/* Pill search */}
+          {/* Search pill */}
           <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2">
             <input
               aria-label="Search books"
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={onKeyDown}
-              placeholder="" /* no example text */
+              placeholder="Search a topic, genre, or similar to books you have read"
               className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
               style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "17px" }}
             />
@@ -110,24 +109,24 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Mascot + Bubble row (mascot LEFT of bubble) */}
-          <div className="relative mt-4 flex items-start gap-3 md:gap-4">
+          {/* Mascot + Bubble row */}
+          <div className="relative mt-4 flex items-start gap-4 md:gap-5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/mascot.png"
               alt="Bookish cat"
-              className="w-24 md:w-28 h-auto drop-shadow-[0_8px_18px_rgba(0,0,0,0.55)] -ml-4 md:ml-0"
+              className="w-36 md:w-40 h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)] -ml-4 md:ml-0"
             />
             <div
-              className="rounded-2xl px-4 py-3 text-[color:var(--parchment)] border"
+              className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border"
               style={{
                 background: "rgba(58,39,33,.78)",
                 borderColor: "rgba(255,255,255,.10)",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
-                maxWidth: "360px",
+                maxWidth: "380px",
                 fontFamily: "Cormorant Garamond, serif",
-                fontSize: "16px",
+                fontSize: "17px",
                 lineHeight: 1.35,
               }}
             >
@@ -147,7 +146,6 @@ export default function Home() {
             </p>
           )}
 
-          {/* Skeletons */}
           {loading && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
@@ -156,7 +154,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Cards */}
           {!loading && items.length > 0 && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {items.map((b, i) => (
@@ -187,7 +184,6 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Toast */}
       {toast && (
         <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-[color:var(--parchment)] bg-[rgba(58,39,33,.78)] border border-[rgba(255,255,255,.08)]">
           {toast}
