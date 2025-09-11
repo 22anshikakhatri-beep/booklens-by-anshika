@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-/** Minimal types for your API response */
+/** API result shape */
 type Book = {
   title: string;
   author: string;
@@ -10,7 +10,7 @@ type Book = {
   year?: number;
   pages?: number;
   rating?: number;
-  reason?: string; // “why this” / description
+  reason?: string;
 };
 
 export default function Home() {
@@ -18,6 +18,7 @@ export default function Home() {
   const [items, setItems] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [lastQuery, setLastQuery] = useState<string>("");
 
   useEffect(() => {
     if (!toast) return;
@@ -33,12 +34,12 @@ export default function Home() {
     }
     setLoading(true);
     setItems([]);
+    setLastQuery(q);
     try {
       const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // backend supports: mode: topic | genre | description
-        // we always send topic since user will type anything here
+        // We always treat the single bar as a topic/prompt search
         body: JSON.stringify({ text: q, mode: "topic", preferences: "" }),
       });
       const data = await res.json();
@@ -52,48 +53,60 @@ export default function Home() {
     }
   }
 
+  // ENTER triggers search
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") runSearch();
+  };
+
+  // Speech bubble message
+  const bubble = useMemo(() => {
+    if (loading) return "Ok, go be busy for 15 sec while I find you books ..";
+    if (!loading && items.length > 0) return "There you go!";
+    return "What do you want to read today?";
+  }, [loading, items.length]);
+
   return (
     <main className="relative min-h-screen">
       {/* Background */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/backrground.png"
+        src="/background.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
       {/* Vignette */}
       <div className="absolute inset-0 vignette" />
 
-      {/* Content */}
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
         {/* Title */}
-        <header className="text-center mb-8">
+        <header className="text-center mb-6 md:mb-8">
           <h1 className="heading-serif text-5xl md:text-6xl font-[900] drop-shadow-[0_3px_2px_rgba(0,0,0,0.55)]">
             Book Burrow
           </h1>
         </header>
 
-        {/* Search only (no tabs, no chips, no secondary input) */}
+        {/* Search section */}
         <section className="relative mx-auto max-w-3xl">
           {/* Mascot on the left of the pill */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/mascot.png"
             alt="Bookish cat"
-            className="hidden md:block absolute -left-24 -top-6 w-28 h-auto drop-shadow-[0_8px_18px_rgba(0,0,0,0.55)]"
+            className="hidden md:block absolute -left-24 -top-4 w-28 h-auto drop-shadow-[0_8px_18px_rgba(0,0,0,0.55)]"
           />
 
-          {/* Pill search */}
+          {/* Pill search – NO example placeholder text */}
           <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2">
             <input
+              aria-label="Search books"
               value={text}
-              onKeyDown={(e) => e.key === "Enter" && runSearch()}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Search here"
+              onKeyDown={onKeyDown}
+              placeholder="" /* no example text */
               className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
               style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "17px" }}
             />
-            {/* circular icon button at right end */}
+            {/* round icon button */}
             <button
               onClick={runSearch}
               disabled={loading}
@@ -101,22 +114,49 @@ export default function Home() {
               aria-label="Search"
               title="Search"
             >
-              {/* search icon */}
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-[color:var(--parchment)]">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
           </div>
+
+          {/* Speech bubble under the search bar */}
+          <div
+            className="
+              absolute
+              left-16
+              top-16
+              md:left-24
+              md:top-16
+              rounded-2xl
+              px-4 py-3
+              text-[color:var(--parchment)]
+              border
+            "
+            style={{
+              background: "rgba(58,39,33,.78)",
+              borderColor: "rgba(255,255,255,.10)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              maxWidth: "340px",
+              fontFamily: "Cormorant Garamond, serif",
+              fontSize: "16px",
+              lineHeight: 1.35,
+            }}
+          >
+            {bubble}
+          </div>
         </section>
 
         {/* Results */}
-        <section className="mt-10">
-          {!loading && items.length === 0 && (
+        <section className="mt-24">
+          {/* Show the current/last query above results, like your ref */}
+          {(lastQuery || text) && (
             <p
-              className="text-center text-[rgba(242,233,220,.88)]"
-              style={{ fontFamily: "Cormorant Garamond, serif" }}
+              className="mb-4 text-center text-[rgba(242,233,220,.92)]"
+              style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "18px" }}
             >
-              Type a prompt above (e.g., “cozy romantic comedy with rivals who become friends”).
+              {loading ? text : lastQuery || text}
             </p>
           )}
 
@@ -131,36 +171,45 @@ export default function Home() {
 
           {/* Cards */}
           {!loading && items.length > 0 && (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {items.map((b, i) => (
-                <article key={`${b.title}-${i}`} className="card p-5 text-[color:var(--parchment)]">
-                  {/* Title & byline */}
-                  <h3 className="text-[22px] font-semibold" style={{ fontFamily: "Cormorant Garamond, serif" }}>
-                    {b.title}
-                  </h3>
-                  {b.author && (
-                    <p className="mt-1 italic text-[rgba(242,233,220,.88)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
-                      by {b.author}
-                    </p>
-                  )}
+            <>
+              {/* “There you go!” bubble already shown above when items > 0 */}
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {items.map((b, i) => (
+                  <article key={`${b.title}-${i}`} className="card p-5 text-[color:var(--parchment)]">
+                    <h3 className="text-[22px] font-semibold" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                      {b.title}
+                    </h3>
+                    {b.author && (
+                      <p className="mt-1 italic text-[rgba(242,233,220,.88)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                        by {b.author}
+                      </p>
+                    )}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {b.genre && <span className="chip">{b.genre}</span>}
+                      {typeof b.year === "number" && <span className="chip">{b.year}</span>}
+                      {typeof b.pages === "number" && <span className="chip">{b.pages}p</span>}
+                      {typeof b.rating === "number" && <span className="chip">★ {b.rating.toFixed(1)}</span>}
+                    </div>
+                    {b.reason && (
+                      <p className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.95)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+                        {b.reason}
+                      </p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </>
+          )}
 
-                  {/* Small chips row, like the reference */}
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {b.genre && <span className="chip">{b.genre}</span>}
-                    {typeof b.year === "number" && <span className="chip">{b.year}</span>}
-                    {typeof b.pages === "number" && <span className="chip">{b.pages}p</span>}
-                    {typeof b.rating === "number" && <span className="chip">★ {b.rating.toFixed(1)}</span>}
-                  </div>
-
-                  {/* Description / why this */}
-                  {b.reason && (
-                    <p className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.95)]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
-                      {b.reason}
-                    </p>
-                  )}
-                </article>
-              ))}
-            </div>
+          {/* Empty hint (only when never searched) */}
+          {!loading && items.length === 0 && !lastQuery && (
+            <p
+              className="text-center text-[rgba(242,233,220,.88)] mt-8"
+              style={{ fontFamily: "Cormorant Garamond, serif" }}
+            >
+              {/* keep subtle guidance but no example inside input */}
+              Start with any theme, genre, or “similar to …”.
+            </p>
           )}
         </section>
       </div>
