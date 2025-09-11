@@ -120,7 +120,7 @@ export default function Home() {
           </form>
 
           {/* Mascot + Bubble row (anchored to search, NOT centered) */}
-          <div className="relative mt-4 flex items-start gap-5">
+          <div className="relative mt-4 flex items-start gap-3">
             {/* Fixed-width mascot container so bubble stays beside it */}
             <div className="flex-shrink-0 w-[260px] md:w-[300px] lg:w-[320px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
