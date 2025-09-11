@@ -1,100 +1,69 @@
+/* Tailwind v4 – single import */
 @import "tailwindcss";
 
-/* ------- Design tokens ------- */
+/* ---------- Base ---------- */
+:root { color-scheme: light; }
+html, body, #__next { height: 100%; }
+
+/* ---------- Palette tuned to your mock ---------- */
 :root{
-  --coffee-900: #2b1e16;
-  --coffee-850: #342318;
-  --coffee-800: #3a281f;
-  --coffee-700: #4a3427;
-  --paper-50:  #f6efe3;
-  --paper-80:  #efe6d7;
-  --text-cream: #fffaf1;
-
-  --ring: rgba(255,255,255,.25);
-  --glass: rgba(58, 40, 31, 0.72);
-  --glass-soft: rgba(42, 30, 23, 0.64);
+  --parchment: #f2e9dc;          /* creamy white used for title/text */
+  --coffee-950:#1f1512;
+  --coffee-900:#2b1c17;
+  --coffee-850:#322018;
+  --coffee-800:#3a271f;
+  --coffee-700:#4a2f23;
+  --coffee-600:#6a4938;
 }
 
-/* ------- Base ------- */
-*{ box-sizing: border-box }
-html,body{ height:100% }
-body{
-  margin:0;
-  color: var(--text-cream);
-  background: #000; /* actual image is placed in page.tsx */
-  font-family: var(--font-body), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* global text tone */
+body{ color: var(--parchment); }
 
-/* nice soft vignette laid over the background image */
-.vignette{
-  position:absolute; inset:0;
-  background:
-    radial-gradient(120% 85% at 50% 10%, transparent 55%, rgba(0,0,0,.45) 100%);
-  pointer-events:none;
-}
-
-/* warm translucent cocoa background used for the search bar and inputs */
+/* warm brown translucent surface with blur (search pill / inputs) */
 .bg-coffee-glass{
-  background: var(--glass);
-  border: 1px solid var(--ring);
+  background: rgba(58,39,33,0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.10);
   border-radius: 9999px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 8px 28px rgba(0,0,0,.35);
 }
 
-/* card for book results */
+/* result card look */
 .card{
-  background: var(--glass-soft);
-  border: 1px solid var(--ring);
+  background:
+    radial-gradient(100% 120% at 0% 0%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 35%),
+    linear-gradient(180deg, var(--coffee-700) 0%, var(--coffee-600) 100%);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.35);
   border-radius: 22px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 10px 32px rgba(0,0,0,.4);
 }
 
-/* small rounded chips (genre, year, rating) */
+/* small rounded chips */
 .chip{
-  display:inline-flex; align-items:center; gap:.25rem;
+  font-size: 12px;
+  line-height: 1;
   padding: 6px 12px;
   border-radius: 9999px;
-  border: 1px solid var(--ring);
-  background: rgba(255,255,255,.12);
-  color: var(--text-cream);
-  font-size: 12px; line-height: 1;
-  white-space: nowrap;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--parchment);
 }
-.chip:hover{ background: rgba(255,255,255,.18) }
 
-/* display font for the “Book Burrow” title */
+/* heading font helper */
 .heading-serif{
-  font-family: var(--font-display), serif;
+  font-family: "Cinzel Decorative", "Playfair Display", serif;
   letter-spacing: .5px;
-  color: var(--paper-50);
-  text-shadow: 0 2px 2px rgba(0,0,0,.5);
 }
 
-/* input + button reset inside glass bar */
-.glass-input{
-  appearance:none; border:0; outline:0;
-  background: transparent; color: var(--text-cream);
-  padding: .75rem 1rem; width:100%;
+/* vignette so the busy bg doesn’t fight the text */
+.vignette{
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.38) 55%,
+    rgba(0,0,0,0.62) 100%
+  );
 }
-.glass-button{
-  appearance:none; border:1px solid var(--ring);
-  background: rgba(255,255,255,.18); color: var(--text-cream);
-  border-radius: 9999px; padding: .6rem 1rem; cursor: pointer;
-}
-.glass-button:hover{ background: rgba(255,255,255,.26) }
-.glass-button:disabled{ opacity:.6; cursor:not-allowed }
 
-/* toast */
-.toast{
-  position:fixed; right:1.25rem; bottom:1.25rem;
-  background: var(--glass);
-  border: 1px solid var(--ring);
-  padding: .75rem 1rem; border-radius: 12px;
-  backdrop-filter: blur(6px);
-}
+/* thin, subtle scrollbars */
+*{ scrollbar-color:#7a6a62 transparent; }
