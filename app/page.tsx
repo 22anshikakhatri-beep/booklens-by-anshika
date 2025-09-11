@@ -57,7 +57,7 @@ export default function Home() {
       {/* Background */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/background.png"
+        src="/backrground.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
@@ -89,7 +89,7 @@ export default function Home() {
               value={text}
               onKeyDown={(e) => e.key === "Enter" && runSearch()}
               onChange={(e) => setText(e.target.value)}
-              placeholder="strategy and gaming"
+              placeholder="Search here"
               className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
               style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "17px" }}
             />
