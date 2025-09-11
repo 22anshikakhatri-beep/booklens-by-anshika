@@ -69,7 +69,7 @@ export default function Home() {
       {/* Background */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/background.png"
+        src="/backrground.png"
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
