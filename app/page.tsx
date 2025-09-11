@@ -115,7 +115,7 @@ export default function Home() {
             <img
               src="/mascot.png"
               alt="Bookish cat"
-              className="w-36 md:w-40 h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)] -ml-4 md:ml-0"
+              className="w-48 md:w-56 h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.55)] -ml-4 md:ml-0"
             />
             <div
               className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border"
