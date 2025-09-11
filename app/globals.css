@@ -1,59 +1,63 @@
 /* Tailwind v4 – single import */
 @import "tailwindcss";
 
-/* --------- Base --------- */
+/* ---------- Base ---------- */
 :root { color-scheme: light; }
 html, body, #__next { height: 100%; }
 
-/* --------- Book Burrow palette & helpers --------- */
-:root {
-  --coffee-900: #2e1f1a;
-  --coffee-800: #3b2721;
-  --coffee-700: #4a2f23;
-  --coffee-600: #6a4938;
-  --coffee-500: #8a6550;
+/* ---------- Palette tuned to your mock ---------- */
+:root{
+  --parchment: #f2e9dc;          /* creamy white used for the title/text */
+  --coffee-950:#1f1512;
+  --coffee-900:#2b1c17;
+  --coffee-850:#322018;
+  --coffee-800:#3a271f;          /* search pill base */
+  --coffee-700:#4a2f23;          /* card top grad */
+  --coffee-650:#533528;
+  --coffee-600:#6a4938;          /* card lower grad */
+  --chip:#6d4b3c;                /* chip base */
 }
 
-/* Translucent warm brown surface with blur */
-.bg-coffee-glass {
-  background: rgba(58,39,33,0.74);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 16px;
+/* page text is slightly warm, not pure white */
+body{ color: var(--parchment); }
+
+/* warm brown translucent surface with blur (search pill, inputs) */
+.bg-coffee-glass{
+  background: rgba(58,39,33,.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 9999px;
 }
 
-/* Card gradient + soft shadow (for result items) */
-.card {
-  background: linear-gradient(180deg, rgba(72,49,41,0.92), rgba(58,39,33,0.92));
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-  border-radius: 18px;
+/* result card look */
+.card{
+  background: radial-gradient(100% 120% at 0% 0%, rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 35%),
+              linear-gradient(180deg, var(--coffee-700) 0%, var(--coffee-600) 100%);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 14px 30px rgba(0,0,0,.35);
+  border-radius: 22px;
 }
 
-/* Small rounded label chip */
-.chip {
+/* small rounded chips */
+.chip{
   font-size: 12px;
   line-height: 1;
-  border-radius: 9999px;
   padding: 6px 12px;
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #f5f5f5;
+  border-radius: 9999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--parchment);
 }
 
-/* Serif for the big title */
-.heading-serif { font-family: "Playfair Display", serif; }
+/* heading font helper */
+.heading-serif{
+  font-family: "Cinzel Decorative", "Playfair Display", serif;
+  letter-spacing: .5px;
+}
 
-/* Vignette overlay to improve contrast on busy backgrounds */
-.vignette {
-  background: radial-gradient(
-    ellipse at center,
+/* vignette so the busy bg doesn’t fight the text */
+.vignette{
+  background: radial-gradient(ellipse at center,
     rgba(0,0,0,0) 0%,
-    rgba(0,0,0,0.35) 55%,
-    rgba(0,0,0,0.6) 100%
-  );
-}
-
-/* nicer scrollbars */
-* { scrollbar-color: #6b7280 transparent; }
+    rgba
