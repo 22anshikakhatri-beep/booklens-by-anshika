@@ -21,7 +21,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const bubbleStyle = {
-  background: "rgba(255, 255, 255, 0.25)", // light glass effect
+  background: "rgba(255, 255, 255, 0.6)", // light glass effect
   border: "1px solid rgba(255, 255, 255, 0.2)",
   backdropFilter: "blur(8px)",
   WebkitBackdropFilter: "blur(8px)",
@@ -106,7 +106,7 @@ export default function Home() {
         {/* Search */}
         <section className="relative mx-auto max-w-3xl">
           <form onSubmit={onSubmit} className="w-full">
-            <div className="bubbleStyle rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50">
+            <div className="rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50" style={bubbleStyle}>
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -133,10 +133,8 @@ export default function Home() {
                 src="/mascot.png"
                 alt="Bookish cat"
                 className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
-                style={{
-                  filter: "brightness(0.95) contrast(0.9) saturate(0.8)"
-                }}
               />
+              <div className="absolute inset-0 bg-black/30 rounded-xl pointer-events-none" />
             </div>
 
             {bubble && (
