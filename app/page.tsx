@@ -21,7 +21,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  // Your single, precise placeholder (as in your reference image)
   const placeholder = useMemo(
     () => "Search a topic, genre, or similar to books you have read",
     []
@@ -47,8 +46,8 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: mode === "similar" ? `Books similar to ${qtext}` : qtext,
-          mode: mode === "similar" ? "topic" : mode, // backend expects: topic | genre | description
-          preferences: "", // we removed extra inputs
+          mode: mode === "similar" ? "topic" : mode,
+          preferences: "",
         }),
       });
       const data = await res.json();
@@ -63,17 +62,17 @@ export default function Home() {
   }
 
   function onSubmit(e: React.FormEvent) {
-    e.preventDefault(); // ENTER submits
+    e.preventDefault();
     runSearch();
   }
 
-  // Bubble copy per state
+  // Bubble copy (hidden while searching)
   const bubble =
     loading && text
-      ? "Ok, go be busy for 15 sec while I find you books…"
+      ? null
       : items.length > 0
       ? "There you go!"
-      : "Hello! What do you want to read today?";
+      : "What do you want to read today?";
 
   return (
     <main className="relative min-h-screen">
@@ -86,10 +85,10 @@ export default function Home() {
       />
       <div className="absolute inset-0 vignette" />
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-24">
         {/* Title */}
         <header className="text-center mb-6 md:mb-8">
-          <h1 className="heading-serif text-5xl md:text-6xl font-[900] drop-shadow-[0_3px_2px_rgba(0,0,0,0.55)]">
+          <h1 className="heading-serif tracking-wider text-5xl md:text-6xl font-[900] drop-shadow-[0_3px_2px_rgba(0,0,0,0.55)]">
             Book Burrow
           </h1>
         </header>
@@ -97,32 +96,29 @@ export default function Home() {
         {/* Search */}
         <section className="relative mx-auto max-w-3xl">
           <form onSubmit={onSubmit} className="w-full">
-            <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/20">
+            <div className="bg-white/80 rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={placeholder}
                 aria-label="Search"
-                className="flex-1 bg-transparent outline-none placeholder:text-[rgba(242,233,220,.75)] text-[color:var(--parchment)] py-2"
-                style={{ fontFamily: "Cormorant Garamond, serif", fontSize: "18px" }}
+                className="flex-1 bg-transparent outline-none text-black placeholder:text-black/50 text-lg font-sans py-2"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="rounded-full h-10 w-10 grid place-items-center border border-white/30 hover:bg-white/20 disabled:opacity-60"
+                className="rounded-full h-10 w-10 grid place-items-center border border-white/40 hover:bg-white/40 disabled:opacity-60"
                 aria-label="Search"
                 title="Search"
               >
-                {/* simple magnifier glyph */}
-                <span className="text-[color:var(--parchment)] text-lg">🔍︎</span>
+                <span className="text-black text-lg">🔍︎</span>
               </button>
             </div>
           </form>
 
-          {/* Mascot + Bubble row (anchored to search, NOT centered) */}
-         <div className="relative mt-8 flex items-start gap-5">
-            {/* Fixed-width mascot so bubble anchors to its right */}
-            <div className="shrink-0 w-[220px] md:w-[260px] lg:w-[320px] ml-6">
+          {/* Mascot + Bubble */}
+          <div className="relative mt-8 flex items-start gap-5 min-h-[160px]">
+            <div className="shrink-0 w-[200px] md:w-[240px] lg:w-[260px] ml-6">
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
@@ -130,22 +126,22 @@ export default function Home() {
               />
             </div>
 
-            {/* Speech bubble grows to the right */}
-            <div
-              className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border flex-grow"
-              style={{
-                background: "bg-coffee-glass",
-                borderColor: "rgba(255,255,255,.10)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                maxWidth: "520px",
-                fontFamily: "Cormorant Garamond, serif",
-                fontSize: "17px",
-                lineHeight: 1.35,
-              }}
-            >
-              {bubble}
-            </div>
+            {bubble && (
+              <div
+                className="rounded-2xl px-5 py-4 text-black border flex-grow font-sans"
+                style={{
+                  background: "rgba(255,255,255,0.85)",
+                  borderColor: "rgba(0,0,0,.10)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  maxWidth: "520px",
+                  fontSize: "18px",
+                  lineHeight: 1.4,
+                }}
+              >
+                {bubble}
+              </div>
+            )}
           </div>
         </section>
 
@@ -157,7 +153,7 @@ export default function Home() {
                 <div
                   key={i}
                   className="rounded-3xl"
-                  style={{ backgroundColor: "bg-coffee-glass", height: "160px" }}
+                  style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }}
                 />
               ))}
             </div>
@@ -168,56 +164,43 @@ export default function Home() {
               {items.map((b, i) => (
                 <article
                   key={`${b.title}-${i}`}
-                  className="rounded-3xl border border-white/10"
+                  className="rounded-3xl border border-black/10 font-sans"
                   style={{
-                    background: "bg-coffee-glass",
+                    background: "rgba(255,255,255,0.85)",
                     padding: "20px",
-                    color: "var(--parchment)",
+                    color: "black",
                     backdropFilter: "blur(6px)",
                     WebkitBackdropFilter: "blur(6px)",
                   }}
                 >
-                  <h3
-                    className="text-[22px] font-semibold"
-                    style={{ fontFamily: "Cormorant Garamond, serif" }}
-                  >
-                    {b.title}
-                  </h3>
+                  <h3 className="text-[22px] font-semibold">{b.title}</h3>
                   {b.author && (
-                    <p
-                      className="mt-1 italic text-[rgba(242,233,220,.85)]"
-                      style={{ fontFamily: "Cormorant Garamond, serif" }}
-                    >
-                      by {b.author}
-                    </p>
+                    <p className="mt-1 italic text-black/70">by {b.author}</p>
                   )}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {b.genre && (
-                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
                         {b.genre}
                       </span>
                     )}
                     {typeof b.year === "number" && (
-                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
                         {b.year}
                       </span>
                     )}
                     {typeof b.pages === "number" && (
-                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
                         {b.pages}p
                       </span>
                     )}
                     {typeof b.rating === "number" && (
-                      <span className="px-3 py-1 rounded-full border border-white/10 bg-white/10 text-sm">
+                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
                         ★ {b.rating.toFixed(1)}
                       </span>
                     )}
                   </div>
                   {b.reason && (
-                    <p
-                      className="mt-4 text-[15px] leading-relaxed text-[rgba(242,233,220,.92)]"
-                      style={{ fontFamily: "Cormorant Garamond, serif" }}
-                    >
+                    <p className="mt-4 text-[15px] leading-relaxed text-black/80">
                       {b.reason}
                     </p>
                   )}
@@ -225,21 +208,12 @@ export default function Home() {
               ))}
             </div>
           )}
-
-          {!loading && items.length === 0 && (
-            <p
-              className="text-center text-[rgba(242,233,220,.85)]"
-              style={{ fontFamily: "Cormorant Garamond, serif" }}
-            >
-              {/* intentionally blank to match your design (no extra helper text) */}
-            </p>
-          )}
         </section>
       </div>
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-[color:var(--parchment)] bg-[bg-coffee-glass] border border-[rgba(255,255,255,.08)]">
+        <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-black bg-[rgba(255,255,255,0.9)] border border-[rgba(0,0,0,0.1)] font-sans">
           {toast}
         </div>
       )}
