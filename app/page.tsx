@@ -159,62 +159,48 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Results */}
-        <section className="mt-10"> 
-          {loading && ( <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"> 
-            {Array.from({ length: 9 }).map((_, i) => ( <div key={i} className="rounded-3xl" style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }} /> ))} 
-          </div> )}
+     {/* Results */}
+<section className="mt-10">
+  {loading && text && (  // <-- add "text" here
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-3xl"
+          style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }}
+        />
+      ))}
+    </div>
+  )}
 
-          {!loading && items.length > 0 && (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {items.map((b, i) => (
-                <article
-                  key={`${b.title}-${i}`}
-                  className="rounded-3xl border border-black/10 font-sans"
-                  style={{
-                    background: "bubbleStyle",
-                    padding: "20px",
-                    color: "black",
-                    backdropFilter: "blur(6px)",
-                    WebkitBackdropFilter: "blur(6px)",
-                  }}
-                >
-                  <h3 className="text-[22px] font-semibold">{b.title}</h3>
-                  {b.author && (
-                    <p className="mt-1 italic text-black/70">by {b.author}</p>
-                  )}
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {b.genre && (
-                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
-                        {b.genre}
-                      </span>
-                    )}
-                    {typeof b.year === "number" && (
-                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
-                        {b.year}
-                      </span>
-                    )}
-                    {typeof b.pages === "number" && (
-                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
-                        {b.pages}p
-                      </span>
-                    )}
-                    {typeof b.rating === "number" && (
-                      <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">
-                        ★ {b.rating.toFixed(1)}
-                      </span>
-                    )}
-                  </div>
-                  {b.reason && (
-                    <p className="mt-4 text-[15px] leading-relaxed text-black/80">
-                      {b.reason}
-                    </p>
-                  )}
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
+  {!loading && items.length > 0 && (
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {items.map((b, i) => (
+        <article
+          key={`${b.title}-${i}`}
+          className="rounded-3xl border border-black/10 font-sans"
+          style={{
+            background: "bubbleStyle",
+            padding: "20px",
+            color: "black",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+          }}
+        >
+          <h3 className="text-[22px] font-semibold">{b.title}</h3>
+          {b.author && <p className="mt-1 italic text-black/70">by {b.author}</p>}
+          <div className="mt-3 flex flex-wrap gap-2">
+            {b.genre && <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">{b.genre}</span>}
+            {typeof b.year === "number" && <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">{b.year}</span>}
+            {typeof b.pages === "number" && <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">{b.pages}p</span>}
+            {typeof b.rating === "number" && <span className="px-3 py-1 rounded-full border border-black/10 bg-black/10 text-sm">★ {b.rating.toFixed(1)}</span>}
+          </div>
+          {b.reason && <p className="mt-4 text-[15px] leading-relaxed text-black/80">{b.reason}</p>}
+        </article>
+      ))}
+    </div>
+  )}
+</section>
       </div>
 
       {/* Toast */}
