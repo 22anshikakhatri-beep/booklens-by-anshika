@@ -106,7 +106,7 @@ export default function Home() {
         {/* Search */}
         <section className="relative mx-auto max-w-3xl">
           <form onSubmit={onSubmit} className="w-full">
-            <div className="rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50" style={bubbleStyle}>
+            <div className="rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -132,9 +132,8 @@ export default function Home() {
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
+                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] vignette-50"
               />
-              <div className="absolute inset-0 bg-black/30 rounded-xl pointer-events-none" />
             </div>
 
             {bubble && (
