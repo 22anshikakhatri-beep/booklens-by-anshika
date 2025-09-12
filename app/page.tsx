@@ -84,7 +84,7 @@ export default function Home() {
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-0" />
+      <div className="absolute inset-0 vignette" />
 
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-24">
         {/* Title */}
@@ -126,7 +126,7 @@ export default function Home() {
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto w-full vintage_90"
+                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
               />
             </div>
 
