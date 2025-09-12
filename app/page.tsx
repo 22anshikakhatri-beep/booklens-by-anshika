@@ -97,7 +97,7 @@ export default function Home() {
         {/* Search */}
         <section className="relative mx-auto max-w-3xl">
           <form onSubmit={onSubmit} className="w-full">
-            <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/20">
+            <div className="rgba(58,39,33,.78) rounded-full p-2 pl-4 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/20">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -122,7 +122,7 @@ export default function Home() {
           {/* Mascot + Bubble row (anchored to search, NOT centered) */}
          <div className="relative mt-8 flex items-start gap-5">
             {/* Fixed-width mascot so bubble anchors to its right */}
-            <div className="shrink-0 w-[260px] md:w-[300px] lg:w-[320px]">
+            <div className="shrink-0 w-[220px] md:w-[260px] lg:w-[320px] ml-6">
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
