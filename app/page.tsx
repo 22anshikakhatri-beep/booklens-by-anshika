@@ -126,7 +126,7 @@ export default function Home() {
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className=""h-auto w-full vintage_90"
+                className="h-auto w-full vintage_90"
               />
             </div>
 
