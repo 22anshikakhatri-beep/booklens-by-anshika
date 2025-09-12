@@ -132,7 +132,10 @@ export default function Home() {
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] vignette"
+                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
+                style={{
+  filter: "brightness(0.6) contrast(1) saturate(0.8)"
+}}
               />
             </div>
 
