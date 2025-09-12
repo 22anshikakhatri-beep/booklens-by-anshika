@@ -23,8 +23,8 @@ export default function Home() {
   const bubbleStyle = {
   background: "rgba(255, 255, 255, 0.85)", // light glass effect
   border: "1px solid rgba(255, 255, 255, 0.2)",
-  backdropFilter: "blur(8px)",
-  WebkitBackdropFilter: "blur(8px)",
+  backdropFilter: "blur(6px)",
+  WebkitBackdropFilter: "blur(6px)",
   maxWidth: "520px",
   fontSize: "18px",
   lineHeight: 1.4,
