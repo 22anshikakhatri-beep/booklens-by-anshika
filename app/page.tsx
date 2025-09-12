@@ -73,7 +73,7 @@ export default function Home() {
       ? "Ok, go be busy for 15 sec while I find you books…"
       : items.length > 0
       ? "There you go!"
-      : "What do you want to read today?";
+      : "Hello! What do you want to read today?";
 
   return (
     <main className="relative min-h-screen">
