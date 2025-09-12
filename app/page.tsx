@@ -126,7 +126,7 @@ export default function Home() {
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] brightness-70 vignette"
+                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] brightness-70 vignette-60"
               />
             </div>
 
