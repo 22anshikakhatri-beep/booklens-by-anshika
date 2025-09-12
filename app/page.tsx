@@ -21,14 +21,15 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const bubbleStyle = {
-  background: "rgba(255, 255, 255, 0.4)", // light glass effect
-  border: "1px solid rgba(255, 255, 255, 0.2)",
-  backdropFilter: "blur(6px)",
-  WebkitBackdropFilter: "blur(6px)",
+  background: "rgba(255, 255, 255, 0.65)",
+  border: "1px solid rgba(255, 255, 255, 0.3)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+  boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
   maxWidth: "520px",
   fontSize: "18px",
   lineHeight: 1.4,
-  color: "black"
+  color: "black",
 };
 
   const placeholder = useMemo(
@@ -161,7 +162,6 @@ export default function Home() {
         {/* Results */}
         <section className="mt-10">
           {loading && (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
                 <div
                   key={i}
