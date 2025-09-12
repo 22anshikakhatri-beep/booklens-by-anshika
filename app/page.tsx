@@ -114,19 +114,19 @@ export default function Home() {
                 title="Search"
               >
                 {/* simple magnifier glyph */}
-                <span className="text-[color:var(--parchment)] text-lg">🔍</span>
+                <span className="text-[color:var(--parchment)] text-lg">🔍︎</span>
               </button>
             </div>
           </form>
 
           {/* Mascot + Bubble row (anchored to search, NOT centered) */}
-         <div className="inline-flex items-start gap-5">
+         <div className="relative mt-8 flex items-start gap-5">
             {/* Fixed-width mascot so bubble anchors to its right */}
             <div className="shrink-0 w-[260px] md:w-[300px] lg:w-[320px]">
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
+                className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] brightness-90"
               />
             </div>
 
