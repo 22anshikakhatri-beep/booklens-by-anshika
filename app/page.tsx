@@ -21,7 +21,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const bubbleStyle = {
-  background: "rgba(255, 255, 255, 0.6)", // light glass effect
+  background: "rgba(255, 255, 255, 0.85)", // light glass effect
   border: "1px solid rgba(255, 255, 255, 0.2)",
   backdropFilter: "blur(8px)",
   WebkitBackdropFilter: "blur(8px)",
