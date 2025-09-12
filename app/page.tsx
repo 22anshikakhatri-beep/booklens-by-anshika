@@ -161,14 +161,12 @@ export default function Home() {
 
         {/* Results */}
         <section className="mt-10">
-          {loading && (
-              {Array.from({ length: 9 }).map((_, i) => (
-                <div
+          {loading && <div
                   key={i}
                   className="rounded-3xl"
                   style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }}
                 />
-              ))}
+              }
             </div>
           )}
 
