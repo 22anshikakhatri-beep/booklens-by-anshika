@@ -126,7 +126,7 @@ export default function Home() {
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
-                className=""h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)] bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_60%,rgba(0,0,0,0.6)_90%)]"
+                className=""h-auto w-full vintage_90%)]"
               />
             </div>
 
