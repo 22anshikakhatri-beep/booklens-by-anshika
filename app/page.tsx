@@ -86,7 +86,7 @@ export default function Home() {
       />
       <div className="absolute inset-0 vignette" />
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-24">
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-10">
         {/* Title */}
         <header className="text-center mb-6 md:mb-8">
           <h1 className="heading-serif text-5xl md:text-6xl font-[900] drop-shadow-[0_3px_2px_rgba(0,0,0,0.55)]">
