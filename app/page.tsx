@@ -160,15 +160,10 @@ export default function Home() {
         </section>
 
         {/* Results */}
-        <section className="mt-10">
-          {loading && <div
-                  key={i}
-                  className="rounded-3xl"
-                  style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }}
-                />
-              }
-            </div>
-          )}
+        <section className="mt-10"> 
+          {loading && ( <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"> 
+            {Array.from({ length: 9 }).map((_, i) => ( <div key={i} className="rounded-3xl" style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }} /> ))} 
+          </div> )}
 
           {!loading && items.length > 0 && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
