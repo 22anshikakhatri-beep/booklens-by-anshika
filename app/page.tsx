@@ -96,7 +96,7 @@ export default function Home() {
         {/* Search */}
         <section className="relative mx-auto max-w-3xl">
           <form onSubmit={onSubmit} className="w-full">
-            <div className="bg-coffee-glass/80 rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50">
+            <div className="bg-coffee-glass rounded-full p-3 pl-5 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/50">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -107,7 +107,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="rounded-full h-10 w-10 grid place-items-center border border-white/40 hover:bg-coffee-glass/40 disabled:opacity-60"
+                className="rounded-full h-10 w-10 grid place-items-center border border-white/40 hover:bg-coffee-glass"
                 aria-label="Search"
                 title="Search"
               >
