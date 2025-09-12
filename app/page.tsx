@@ -97,7 +97,7 @@ export default function Home() {
         {/* Search */}
         <section className="relative mx-auto max-w-3xl">
           <form onSubmit={onSubmit} className="w-full">
-            <div className="rgba(58,39,33,.78) rounded-full p-2 pl-4 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/20">
+            <div className="bg-coffee-glass rounded-full p-2 pl-4 flex items-center gap-2 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-white/20">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -134,7 +134,7 @@ export default function Home() {
             <div
               className="rounded-2xl px-5 py-4 text-[color:var(--parchment)] border flex-grow"
               style={{
-                background: "rgba(58,39,33,.78)",
+                background: "bg-coffee-glass",
                 borderColor: "rgba(255,255,255,.10)",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
@@ -157,7 +157,7 @@ export default function Home() {
                 <div
                   key={i}
                   className="rounded-3xl"
-                  style={{ backgroundColor: "rgba(58,39,33,.78)", height: "160px" }}
+                  style={{ backgroundColor: "bg-coffee-glass", height: "160px" }}
                 />
               ))}
             </div>
@@ -170,7 +170,7 @@ export default function Home() {
                   key={`${b.title}-${i}`}
                   className="rounded-3xl border border-white/10"
                   style={{
-                    background: "rgba(58,39,33,.78)",
+                    background: "bg-coffee-glass",
                     padding: "20px",
                     color: "var(--parchment)",
                     backdropFilter: "blur(6px)",
@@ -239,7 +239,7 @@ export default function Home() {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-[color:var(--parchment)] bg-[rgba(58,39,33,.78)] border border-[rgba(255,255,255,.08)]">
+        <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-[color:var(--parchment)] bg-[bg-coffee-glass] border border-[rgba(255,255,255,.08)]">
           {toast}
         </div>
       )}
