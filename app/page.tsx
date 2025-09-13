@@ -21,7 +21,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const bubbleStyle = {
-  background: "rgba(255, 255, 255, 0.65)",
+  background: "rgba(255, 255, 255, 0.3)",
   border: "1px solid rgba(255, 255, 255, 0.3)",
   backdropFilter: "blur(10px)",
   WebkitBackdropFilter: "blur(10px)",
@@ -94,7 +94,7 @@ export default function Home() {
         alt=""
         className="pointer-events-none select-none absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-0 vignette" />
+      <div className="absolute inset-0" />
 
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-24">
         {/* Title */}
@@ -113,7 +113,7 @@ export default function Home() {
                 onChange={(e) => setText(e.target.value)}
                 placeholder={placeholder}
                 aria-label="Search"
-                className="flex-1 bg-transparent outline-none text-black placeholder:text-black/50 text-lg font-sans py-2"
+                className=" flex-1 bg-rgba(255, 255, 255, 0.3) outline-none text-black placeholder:text-black/50 text-lg font-sans py-2"
               />
               <button
                 type="submit"
@@ -135,7 +135,7 @@ export default function Home() {
                 alt="Bookish cat"
                 className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
                 style={{
-  filter: "brightness(0.75) contrast(1.1) saturate(0.85)"
+  filter: "brightness(0.85) contrast(1) saturate(0.85)"
 }}
               />
             </div>
@@ -167,7 +167,7 @@ export default function Home() {
       <div
         key={i}
         className="rounded-3xl"
-        style={{ backgroundColor: "rgba(255,255,255,0.75)", height: "160px" }}
+        style={{ backgroundColor: "rgba(255,255,255,0)", height: "160px" }}
       />
     ))}
   </div>
