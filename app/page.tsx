@@ -21,11 +21,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const bubbleStyle = {
-  background: "rgba(255, 255, 255, 0.85)", // much stronger white tint
-  border: "1px solid rgba(255, 255, 255, 0.6)",
-  backdropFilter: "blur(8px)",
-  WebkitBackdropFilter: "blur(8px)",
-  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.15)",
+  background: "rgba(255, 255, 255, 0.95)", // very close to solid white
+  border: "1px solid rgba(230, 230, 230, 0.9)",
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
   maxWidth: "520px",
   fontSize: "18px",
   lineHeight: 1.4,
@@ -135,7 +133,7 @@ export default function Home() {
                 alt="Bookish cat"
                 className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
                 style={{
-  filter: "brightness(0.9) contrast(1) saturate(0.85)"
+  filter: "brightness(0.97) contrast(1) saturate(0.9)"
 }}
               />
             </div>
