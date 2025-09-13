@@ -21,15 +21,15 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const bubbleStyle = {
-  background: "rgba(255, 255, 255, 0.3)",
-  border: "1px solid rgba(255, 255, 255, 0.3)",
-  backdropFilter: "blur(10px)",
-  WebkitBackdropFilter: "blur(10px)",
-  boxShadow: "0 4px 30px rgba(255, 255, 255, 0.1)",
+  background: "rgba(255, 255, 255, 0.7)", // more white, less transparent
+  border: "1px solid rgba(255, 255, 255, 0.6)", 
+  backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
+  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.15)", // softer shadow, darker
   maxWidth: "520px",
   fontSize: "18px",
   lineHeight: 1.4,
-  color: "black",
+  color: "black", // stays legible
 };
 
   const placeholder = useMemo(
@@ -135,7 +135,7 @@ export default function Home() {
                 alt="Bookish cat"
                 className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
                 style={{
-  filter: "brightness(0.85) contrast(1) saturate(0.85)"
+  filter: "brightness(0.9) contrast(1) saturate(0.85)"
 }}
               />
             </div>
