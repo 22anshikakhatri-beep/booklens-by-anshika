@@ -99,7 +99,7 @@ export default function Home() {
       <div className="absolute inset-0" />
 
       {/* CHANGE: push content down so elements sit near the ledge */}
-      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-40 md:pt-48 lg:pt-56">
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-24 md:pt-28 lg:pt-32">
         {/* Title */}
         <header className="text-center mb-6 md:mb-8">
           <h1
@@ -112,7 +112,7 @@ export default function Home() {
 
         {/* Search */}
         {/* CHANGE: make bar a touch narrower and centered */}
-        <section className="relative mx-auto w-full max-w-2xl">
+        <section className="relative mx-auto w-full max-w-3xl lg:max-w-4xl">
           <form onSubmit={onSubmit} className="w-full">
             <div
               className="rounded-full p-3 pl-5 flex items-center gap-2"
@@ -146,9 +146,9 @@ export default function Home() {
           </form>
 
           {/* Mascot + Bubble row */}
-          <div className="relative mt-8 flex items-start gap-5 min-h-[160px]">
+          <div className="relative mt-4 flex items-start gap-5 min-h-[160px]">
             {/* CHANGE: nudge mascot right */}
-            <div className="shrink-0 w-[200px] md:w-[240px] lg:w-[260px] ml-10 md:ml-16">
+            <div className="shrink-0 w-[200px] md:w-[240px] lg:w-[260px] ml-10 md:ml-16 -mt-1">
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
@@ -163,7 +163,7 @@ export default function Home() {
             {bubble && (
               // CHANGE: nudge bubble down a bit so it can overlap nicely
               <div
-                className="rounded-2xl px-5 py-4 flex-grow font-sans text-white mt-3"
+                className="rounded-2xl px-5 py-4 flex-grow font-sans text-white mt-2"
                 style={bubbleStyle}
               >
                 {bubble}
