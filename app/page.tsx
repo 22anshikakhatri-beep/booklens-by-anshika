@@ -23,7 +23,7 @@ export default function Home() {
 
   const bubbleStyle = {
     background: "rgba(34,24,18,0.64)",
-    border: "1px solid rgba(255,255,255,0.18)",
+    border: "1.5px solid rgba(255,255,255,0.18)",
     boxShadow: "0 4px 20px rgba(0,0,0,0.30)",
     color: "#fff",
     backdropFilter: "blur(8px)",
