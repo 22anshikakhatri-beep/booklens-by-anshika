@@ -149,7 +149,7 @@ export default function Home() {
 
             {/* Bubble to the right area (red box location) */}
             <div
-              className="absolute top-1 left-[340px] md:left-[400px] lg:left-[380px] -translate-y-1/2 rounded-2xl px-5 py-4 font-sans text-white"
+              className="absolute top-3/4 left-[340px] md:left-[400px] lg:left-[380px] -translate-y-1/2 rounded-2xl px-5 py-4 font-sans text-white"
               style={{ ...bubbleStyle, maxWidth: "520px" }}
             >
               {bubble}
