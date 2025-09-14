@@ -150,10 +150,11 @@ export default function Home() {
             {/* Bubble to the right area (red box location) */}
             <div
               className="absolute top-5/8 left-[340px] md:left-[400px] lg:left-[380px] -translate-y-1/2 rounded-2xl px-5 py-4 font-sans text-white"
-              style={{background: "rgba(92, 64, 51, 0.65)", // transparent brown just for mascot bubble
-    border: "1px solid rgba(255,255,255,0.18)", // still soft border
-    color: "#fff", // make sure text is visible
-    maxWidth: "520px" }}
+              style={{
+                background: "rgba(60, 40, 30, 0.75)", // darker transparent brown
+                color: "#fff", // keep text readable
+                maxWidth: "520px",
+                }}
             >
               {bubble}
             </div>
