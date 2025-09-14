@@ -105,7 +105,7 @@ export default function Home() {
         </header>
 
         {/* Search (CHANGE #2: centered, wide) */}
-        <section className="relative mx-auto w-full">
+        <section className="relative mx-auto w-full mt-10">
           <form onSubmit={onSubmit} className="w-full">
             <div
               className="mx-auto max-w-[880px] w-full rounded-full p-3 pl-5 flex items-center gap-2"
