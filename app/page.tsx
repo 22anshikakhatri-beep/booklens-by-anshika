@@ -135,7 +135,7 @@ export default function Home() {
 
           {/* CHANGE #3: Position mascot (green box) and bubble (red box) */}
           {/* We make this area the anchor for absolute positioning */}
-          <div className="relative mx-auto max-w-[980px] h-[180px] mt-5">
+          <div className="relative mx-auto max-w-[980px] h-[180px] mt-7">
             {/* Mascot at the left area (green box location) */}
             <div className="absolute left-[90px] md:left-[120px] lg:left-[140px] top-[10px] md:top-[8px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -149,7 +149,7 @@ export default function Home() {
 
             {/* Bubble to the right area (red box location) */}
             <div
-              className="absolute top-3/4 left-[340px] md:left-[400px] lg:left-[380px] -translate-y-1/2 rounded-2xl px-5 py-4 font-sans text-white"
+              className="absolute top-5/8 left-[340px] md:left-[400px] lg:left-[380px] -translate-y-1/2 rounded-2xl px-5 py-4 font-sans text-white"
               style={{ ...bubbleStyle, maxWidth: "520px" }}
             >
               {bubble}
