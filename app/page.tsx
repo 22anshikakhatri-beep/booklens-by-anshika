@@ -153,7 +153,7 @@ export default function Home() {
               style={{background: "rgba(92, 64, 51, 0.65)", // transparent brown just for mascot bubble
     border: "1px solid rgba(255,255,255,0.18)", // still soft border
     color: "#fff", // make sure text is visible
-  , maxWidth: "520px" }}
+    maxWidth: "520px" }}
             >
               {bubble}
             </div>
