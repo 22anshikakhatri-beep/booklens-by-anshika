@@ -21,12 +21,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  // CHANGE: unify bubble style (dark glass + white text for contrast)
+  // CHANGE: lighten glass + keep white text for contrast
   const bubbleStyle = {
-    background: "rgba(34, 24, 18, 0.78)",
-    border: "1px solid rgba(255,255,255,0.14)",
-    boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
-    color: "#ffffff",
+    background: "rgba(34, 24, 18, 0.64)", // was 0.78 â€“ looks less blackish
+    border: "1px solid rgba(255,255,255,0.18)",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.30)",
+    color: "#fff",
     backdropFilter: "blur(8px)",
     WebkitBackdropFilter: "blur(8px)",
     maxWidth: "520px",
@@ -79,9 +79,10 @@ export default function Home() {
     runSearch();
   }
 
+  // CHANGE: ASCII "..." to avoid encoding gremlins
   const bubble =
     loading && text
-      ? "Ok, go be busy for 15 sec while I find you booksâ€¦"
+      ? "Ok, go be busy for 15 sec while I find you books..."
       : items.length > 0
       ? "There you go!"
       : "What do you want to read today?";
@@ -97,7 +98,8 @@ export default function Home() {
       />
       <div className="absolute inset-0" />
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-24">
+      {/* CHANGE: push content down so elements sit near the ledge */}
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-40 md:pt-48 lg:pt-56">
         {/* Title */}
         <header className="text-center mb-6 md:mb-8">
           <h1
@@ -109,49 +111,60 @@ export default function Home() {
         </header>
 
         {/* Search */}
-        <section className="relative mx-auto max-w-3xl">
+        {/* CHANGE: make bar a touch narrower and centered */}
+        <section className="relative mx-auto w-full max-w-2xl">
           <form onSubmit={onSubmit} className="w-full">
             <div
-              className="rounded-full p-3 pl-5 flex items-center gap-2" // CHANGE: keep classes minimal
-              style={bubbleStyle} // CHANGE: same style as bubbles
+              className="rounded-full p-3 pl-5 flex items-center gap-2"
+              style={bubbleStyle} // CHANGE: same glass as bubbles
             >
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={placeholder}
                 aria-label="Search"
-                className="flex-1 bg-transparent outline-none text-white placeholder:text-white/70 text-lg font-sans py-2" // CHANGE: readable on dark glass
+                className="flex-1 bg-transparent outline-none text-white placeholder:text-white/70 text-lg font-sans py-2" // CHANGE: white text
               />
+              {/* CHANGE: replace emoji with inline SVG to fix mojibake */}
               <button
                 type="submit"
                 disabled={loading}
-                className="rounded-full h-10 w-10 grid place-items-center border border-white/30 hover:border-white/60 transition disabled:opacity-60 disabled:cursor-not-allowed" // CHANGE
+                className="rounded-full h-10 w-10 grid place-items-center border border-white/30 hover:border-white/60 transition disabled:opacity-60 disabled:cursor-not-allowed"
                 aria-label="Search"
                 title="Search"
               >
-                <span className="text-white text-lg">ðŸ”</span> {/* CHANGE: ensure white icon */}
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 text-white"
+                  aria-hidden="true"
+                >
+                  <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" />
+                </svg>
               </button>
             </div>
           </form>
 
-          {/* Mascot + Bubble */}
+          {/* Mascot + Bubble row */}
           <div className="relative mt-8 flex items-start gap-5 min-h-[160px]">
-            <div className="shrink-0 w-[200px] md:w-[240px] lg:w-[260px] ml-6">
+            {/* CHANGE: nudge mascot right */}
+            <div className="shrink-0 w-[200px] md:w-[240px] lg:w-[260px] ml-10 md:ml-16">
               <img
                 src="/mascot.png"
                 alt="Bookish cat"
                 className="h-auto w-full drop-shadow-[0_12px_24px_rgba(0,0,0,0.55)]"
                 style={{
-                  // CHANGE: slightly darker mascot
-                  filter: "brightness(0.88) contrast(1.05) saturate(0.9)",
+                  // CHANGE: slightly darker
+                  filter: "brightness(0.88) contrast(1.06) saturate(0.9)",
                 }}
               />
             </div>
 
             {bubble && (
+              // CHANGE: nudge bubble down a bit so it can overlap nicely
               <div
-                className="rounded-2xl px-5 py-4 flex-grow font-sans text-white" // CHANGE: text-white
-                style={bubbleStyle} // CHANGE: actually apply bubbleStyle
+                className="rounded-2xl px-5 py-4 flex-grow font-sans text-white mt-3"
+                style={bubbleStyle}
               >
                 {bubble}
               </div>
@@ -179,18 +192,18 @@ export default function Home() {
                 <article
                   key={`${b.title}-${i}`}
                   className="rounded-3xl font-sans"
-                  style={{ ...bubbleStyle, padding: "20px" }} // CHANGE: unify card look
+                  style={{ ...bubbleStyle, padding: "20px" }} // CHANGE: same glass look
                 >
-                  <h3 className="text-[22px] font-semibold text-white">{b.title}</h3> {/* CHANGE */}
+                  <h3 className="text-[22px] font-semibold text-white">{b.title}</h3>
                   {b.author && (
-                    <p className="mt-1 italic text-white/80">by {b.author}</p> // CHANGE
+                    <p className="mt-1 italic text-white/80">by {b.author}</p>
                   )}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {b.genre && (
                       <span className="px-3 py-1 rounded-full border border-white/20 bg-white/10 text-white text-sm">
                         {b.genre}
                       </span>
-                    )} {/* CHANGE: chips match dark glass */}
+                    )}
                     {typeof b.year === "number" && (
                       <span className="px-3 py-1 rounded-full border border-white/20 bg-white/10 text-white text-sm">
                         {b.year}
@@ -211,7 +224,7 @@ export default function Home() {
                     <p className="mt-4 text-[15px] leading-relaxed text-white/90">
                       {b.reason}
                     </p>
-                  )} {/* CHANGE */}
+                  )}
                 </article>
               ))}
             </div>
@@ -219,7 +232,7 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Toast (kept as-is) */}
+      {/* Toast â€“ unchanged */}
       {toast && (
         <div className="fixed bottom-5 right-5 rounded-xl px-4 py-3 text-black bg-[rgba(255,255,255,0.9)] border border-[rgba(0,0,0,0.1)] font-sans">
           {toast}
