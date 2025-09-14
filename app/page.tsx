@@ -112,7 +112,7 @@ export default function Home() {
 
         {/* Search */}
         {/* CHANGE: make bar a touch narrower and centered */}
-        <section className="relative mx-auto w-full max-w-3xl lg:max-w-4xl">
+        <section className="relative mx-auto w-full">
           <form onSubmit={onSubmit} className="w-full">
             <div
               className="rounded-full p-3 pl-5 flex items-center gap-2"
