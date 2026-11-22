@@ -43,7 +43,11 @@ export async function POST(req: Request) {
     const prefs = preferences ? `Additional preferences: "${preferences}".` : '';
 
     const payload = {
-      model: process.env.OPENROUTER_MODEL || 'deepseek/deepseek-r1-0528-qwen3-8b:free',
+      // Primary model, then OpenRouter's free router as a fallback if the primary is unavailable
+      models: [
+        process.env.OPENROUTER_MODEL || 'openrouter/free',
+        'openrouter/free'
+      ],
       messages: [
         { role: 'system', content: sys },
         { role: 'user', content: `${userTask}\n${prefs}\nRemember: Return ONLY valid JSON per schema.` }
